@@ -4,7 +4,9 @@ from google import genai
 API_KEY = "TERI_GEMINI_API_KEY"
 client = genai.Client(api_key=API_KEY)
 app = Flask(__name__)
-
+@app.route('/ping')
+def ping():
+    return "JARVIS JAGDA HAI!"
 @app.route('/')
 def home():
     return """
