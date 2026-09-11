@@ -3,20 +3,17 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import google.generativeai as genai
 
-# API Key Render de Environment chon lavega
-API_KEY = os.environ.get("GEMINI_API_KEY") 
-if not API_KEY:
-    API_KEY = "TEMPERORY_KEY_PASTE_HERE_IF_NEEDED" # ithe apni key paa de je env ch nahi
-
-genai.configure(api_key=API_KEY)
-model = genai.GenerativeModel('gemini-1.5-flash')
-
 app = Flask(__name__)
 CORS(app)
 
+# Apni API Key ethe paa
+genai.configure(api_key=os.environ.get("GEMINI_API_KEY", "AIzaSy...TeriKey..."))
+
+model = genai.GenerativeModel('gemini-1.5-flash')
+
 @app.route('/')
 def home():
-    return "JARVIS JAGDA HAI"
+    return "JARVIS IS LIVE"
 
 @app.route('/ping')
 def ping():
@@ -24,14 +21,15 @@ def ping():
 
 @app.route('/ask')
 def ask():
-    q = request.args.get('q','')
+    q = request.args.get('q', '')
     if not q:
-        return jsonify({"reply": "Ki puchna?"})
+        return jsonify({"reply": "Bolo veere ki chahida?"})
     try:
         response = model.generate_content(q)
         return jsonify({"reply": response.text})
     except Exception as e:
-        return jsonify({"reply": f"Error: {e}"})
+        return jsonify({"reply": f"Error: {str(e)}"})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=10000)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
