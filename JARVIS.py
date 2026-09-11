@@ -1,7 +1,16 @@
 from flask import Flask, request, jsonify
 from google import genai
 
-API_KEY = "TERI_GEMINI_API_KEY"
+API_KEY = "from google import genai
+
+client = genai.Client()
+
+interaction = client.interactions.create(
+    model="gemini-3.8-flash",
+    input="Explain how AI works in a few words"
+)
+
+print(interaction.output_text)"
 client = genai.Client(api_key=API_KEY)
 app = Flask(__name__)
 @app.route('/ping')
